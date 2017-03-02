@@ -106,6 +106,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQLScriptsForDB\000CreateDBAndSchema.sql" />
+    <Content Include="SQLScriptsForDB\001CreateTable.sql" />
     <Content Include="View.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
