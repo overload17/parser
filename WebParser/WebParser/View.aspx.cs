@@ -11,7 +11,7 @@ namespace WebParser
   {
     protected void Page_Load(object sender, EventArgs e)
     {
-      Processor.GetPageFromSource("http://skay.ua/111-gadjety/");
+      Processor.GetPageFromSource("http://skay.ua/4-samsung/");
     }
   }
 }

@@ -12,16 +12,11 @@ namespace DAL
     {
     }
 
-    public static IProductDao GetInstance()
-    {
-      return _uniqueNotificationsDao ?? (_uniqueNotificationsDao = new SqlProductsDao());
-    }
-
     public void AddProduct(Product product)
     {
       using (var context = new OnlineShopEntities())
       {
-        var productDb = (Products)ConvertToStoredProduct(product);
+        var productDb = (Products) ConvertToStoredProduct(product);
         context.Products.Add(productDb);
         context.SaveChanges();
       }
@@ -31,7 +26,7 @@ namespace DAL
     {
       using (var context = new OnlineShopEntities())
       {
-        var priceCardDb = (Prices)ConvertToStoredPriceCard(priceCard);
+        var priceCardDb = (Prices) ConvertToStoredPriceCard(priceCard);
         context.Prices.Add(priceCardDb);
         context.SaveChanges();
       }
@@ -112,7 +107,7 @@ namespace DAL
         productDb.ImageBase64 = product.ImageBase64;
       }
     }
-      
+
     public void EditPriceCard(PriceCard priceCard)
     {
       using (var context = new OnlineShopEntities())
@@ -178,6 +173,25 @@ namespace DAL
       {
         return context.Products.Where(p => p.Link == link).ToList().Select(ConvertToProduct).ToList().FirstOrDefault();
       }
+    }
+
+    public PriceCard GetLastPriceByProductID(int id)
+    {
+      using (var context = new OnlineShopEntities())
+      {
+        return
+          context.Prices.Where(q => q.ID_Product == id)
+            .Select(ConvertToPriceCard)
+            .ToList()
+            .OrderByDescending(p => p.PublishDate)
+            .ToList()
+            .First();
+      }
+    }
+
+    public static IProductDao GetInstance()
+    {
+      return _uniqueNotificationsDao ?? (_uniqueNotificationsDao = new SqlProductsDao());
     }
   }
 }

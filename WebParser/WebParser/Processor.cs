@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,7 +9,6 @@ using System.Text.RegularExpressions;
 using DAL;
 using DAL.Models;
 using HtmlAgilityPack;
-using Image = System.Drawing.Image;
 
 namespace WebParser
 {
@@ -25,7 +25,7 @@ namespace WebParser
         string link;
         string image;
         string price;
-        var publishDate = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        var publishDate = (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         using (var client = new WebClient())
         {
           link = feedItems.SelectSingleNode(".//a").Attributes["href"].Value;
@@ -35,14 +35,23 @@ namespace WebParser
           image = GetBase64Image(link);
           doc.LoadHtml(html);
           title = doc.DocumentNode.SelectNodes("//*[@id='primary_block']/h1").First().ChildNodes[0].InnerText;
-          description = doc.DocumentNode.SelectNodes("//*[@id='short_description_content']").First().ChildNodes[0].InnerText;
-          price = Regex.Replace(doc.DocumentNode.SelectNodes("//*[@id='our_price_display']").First().ChildNodes[0].InnerText, @"\s+", "");
+          description =
+            doc.DocumentNode.SelectNodes("//*[@id='short_description_content']").First().ChildNodes[0].InnerText;
+          price =
+            Regex.Replace(doc.DocumentNode.SelectNodes("//*[@id='our_price_display']").First().ChildNodes[0].InnerText,
+              @"\s+", "");
         }
-        if (!productsList.Any() || (productsList.Count(x => x.Link == link) == 0))
+        if (!productsList.Any() || productsList.Count(x => x.Link == link) == 0)
         {
-            Dao.AddProduct(new Product(title, description, link, image));
-            var prod = Dao.GetProductByLink(link);
-            Dao.AddPriceCard(new PriceCard(prod.ID, int.Parse(price), publishDate));
+          Dao.AddProduct(new Product(title, description, link, image));
+          var product = Dao.GetProductByLink(link);
+          Dao.AddPriceCard(new PriceCard(product.ID, int.Parse(price), publishDate));
+        }
+        else
+        {
+          var product = Dao.GetProductByLink(link);
+          if (Dao.GetLastPriceByProductID(product.ID).Price != int.Parse(price))
+            Dao.AddPriceCard(new PriceCard(product.ID, int.Parse(price), publishDate));
         }
       }
     }
@@ -72,13 +81,13 @@ namespace WebParser
           var doc = new HtmlDocument();
           doc.LoadHtml(html);
           var nodes = doc.DocumentNode.SelectNodes("//*[@id='bigpic']");
-          if ((nodes != null) && (nodes.Count > 0))
+          if (nodes != null && nodes.Count > 0)
           {
             var imgUrl = nodes[0].Attributes["src"].Value;
-            var request = (HttpWebRequest)WebRequest.Create("http://skay.ua");
+            var request = (HttpWebRequest) WebRequest.Create("http://skay.ua");
             try
             {
-              request = (HttpWebRequest)WebRequest.Create(imgUrl);
+              request = (HttpWebRequest) WebRequest.Create(imgUrl);
             }
             catch (Exception exc)
             {
@@ -87,11 +96,11 @@ namespace WebParser
             request.UserAgent = "Foo";
             request.Accept = "*/*";
             request.Headers.Add("myheader", "myheader_value");
-            var response = (HttpWebResponse)request.GetResponse();
+            var response = (HttpWebResponse) request.GetResponse();
 
-            if (((response.StatusCode == HttpStatusCode.OK) ||
-                 (response.StatusCode == HttpStatusCode.Moved) ||
-                 (response.StatusCode == HttpStatusCode.Redirect)) &&
+            if ((response.StatusCode == HttpStatusCode.OK ||
+                 response.StatusCode == HttpStatusCode.Moved ||
+                 response.StatusCode == HttpStatusCode.Redirect) &&
                 response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
             {
               const string pathToImg = @"c:\Shop\NewsPic";
@@ -104,6 +113,7 @@ namespace WebParser
                   int bytesRead;
                   do
                   {
+                    // ReSharper disable once PossibleNullReferenceException
                     bytesRead = inputStream.Read(buffer, 0, buffer.Length);
                     outputStream.Write(buffer, 0, bytesRead);
                   } while (bytesRead != 0);
@@ -139,7 +149,7 @@ namespace WebParser
 
     private static void ShowException(string ex)
     {
-      var exception = @"C:\Forex\exceptionNewsService.txt".Replace(@"\bin\Debug", "").Replace(@"\bin\Release", "");
+      var exception = @"C:\Shop\exceptionNewsService.txt".Replace(@"\bin\Debug", "").Replace(@"\bin\Release", "");
       var append = "\r\n" + "Time" + DateTime.UtcNow + " " + ex;
       if (!File.Exists(exception))
         File.WriteAllText(exception, append);

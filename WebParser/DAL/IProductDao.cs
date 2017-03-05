@@ -14,6 +14,7 @@ namespace DAL
     List<Product> GetAllProducts();
     List<PriceCard> GetAllPriceCards();
     List<PriceCard> GetAllPriceCardsByProductID(int id);
+    PriceCard GetLastPriceByProductID(int id);
     void DeleteProductById(int id);
     void DeletePriceCardById(int id);
     void EditProduct(Product product);
