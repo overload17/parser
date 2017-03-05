@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace WebParser
 {
-  public partial class View : System.Web.UI.Page
+  public partial class View : Page
   {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+      Processor.GetPageFromSource("http://skay.ua/111-gadjety/");
     }
   }
 }

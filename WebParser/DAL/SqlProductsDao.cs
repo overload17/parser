@@ -65,7 +65,7 @@ namespace DAL
     {
       using (var context = new OnlineShopEntities())
       {
-        return context.Products.Select(p => ConvertToProduct(p)).ToList();
+        return context.Products.Select(p => p).ToList().Select(ConvertToProduct).ToList();
       }
     }
 
@@ -73,53 +73,111 @@ namespace DAL
     {
       using (var context = new OnlineShopEntities())
       {
-        return context.Prices.Select(p => ConvertToPriceCard(p)).ToList();
+        return context.Prices.Select(p => p).ToList().Select(ConvertToPriceCard).ToList();
       }
     }
 
     public List<PriceCard> GetAllPriceCardsByProductID(int id)
     {
-      throw new System.NotImplementedException();
+      using (var context = new OnlineShopEntities())
+      {
+        return context.Prices.Where(q => q.ID_Product == id).Select(p => p).ToList().Select(ConvertToPriceCard).ToList();
+      }
     }
 
     public void DeleteProductById(int id)
     {
-      throw new System.NotImplementedException();
+      using (var context = new OnlineShopEntities())
+      {
+        context.Products.Remove(context.Products.Where(x => x.ID == id).Select(x => x).FirstOrDefault());
+      }
     }
 
     public void DeletePriceCardById(int id)
     {
-      throw new System.NotImplementedException();
+      using (var context = new OnlineShopEntities())
+      {
+        context.Prices.Remove(context.Prices.Where(x => x.ID == id).Select(x => x).FirstOrDefault());
+      }
     }
 
     public void EditProduct(Product product)
     {
-      throw new System.NotImplementedException();
+      using (var context = new OnlineShopEntities())
+      {
+        var productDb = context.Products.First(n => n.ID == product.ID);
+        productDb.Description = product.Description;
+        productDb.Title = product.Title;
+        productDb.Link = product.Link;
+        productDb.ImageBase64 = product.ImageBase64;
+      }
     }
-
-    public void EditPriceCardt(PriceCard priceCard)
+      
+    public void EditPriceCard(PriceCard priceCard)
     {
-      throw new System.NotImplementedException();
+      using (var context = new OnlineShopEntities())
+      {
+        var priceCardDb = context.Prices.First(n => n.ID == priceCard.ID);
+        priceCardDb.ID_Product = priceCard.ID_Product;
+        priceCardDb.PublishDate = priceCard.PublishDate;
+        priceCardDb.Price = priceCard.Price;
+      }
     }
 
     public object ConvertToStoredProduct(Product product)
     {
-      throw new System.NotImplementedException();
+      var result = new Products
+      {
+        ID = product.ID,
+        Title = product.Title,
+        Description = product.Description,
+        ImageBase64 = product.ImageBase64,
+        Link = product.Link
+      };
+      return result;
     }
 
     public object ConvertToStoredPriceCard(PriceCard product)
     {
-      throw new System.NotImplementedException();
+      var result = new Prices
+      {
+        ID = product.ID,
+        ID_Product = product.ID_Product,
+        Price = product.Price,
+        PublishDate = product.PublishDate
+      };
+      return result;
     }
 
     public PriceCard ConvertToPriceCard(Prices product)
     {
-      throw new System.NotImplementedException();
+      return new PriceCard
+      {
+        ID = product.ID,
+        ID_Product = product.ID_Product,
+        Price = product.Price,
+        PublishDate = product.PublishDate
+      };
     }
 
     public Product ConvertToProduct(Products product)
     {
-      throw new System.NotImplementedException();
+      return new Product
+      {
+        ID = product.ID,
+        Title = product.Title,
+        Description = product.Description,
+        ImageBase64 = product.ImageBase64,
+        Link = product.Link
+      };
+    }
+
+    public Product GetProductByLink(string link)
+    {
+      using (var context = new OnlineShopEntities())
+      {
+        return context.Products.Where(p => p.Link == link).ToList().Select(ConvertToProduct).ToList().FirstOrDefault();
+      }
     }
   }
 }

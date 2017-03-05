@@ -8,6 +8,7 @@ namespace DAL
     void AddProduct(Product product);
     void AddPriceCard(PriceCard priceCard);
     Product GetProductById(int id);
+    Product GetProductByLink(string link);
     PriceCard GetPriceById(int id);
     List<PriceCard> GetPriceByProductId(int id);
     List<Product> GetAllProducts();
@@ -16,7 +17,7 @@ namespace DAL
     void DeleteProductById(int id);
     void DeletePriceCardById(int id);
     void EditProduct(Product product);
-    void EditPriceCardt(PriceCard priceCard);
+    void EditPriceCard(PriceCard priceCard);
     object ConvertToStoredProduct(Product product);
     Product ConvertToProduct(Products product);
     object ConvertToStoredPriceCard(PriceCard product);

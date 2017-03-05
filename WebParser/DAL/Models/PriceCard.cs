@@ -20,5 +20,16 @@ namespace DAL.Models
       Price = price;
       PublishDate = publishDate;
     }
+
+    public PriceCard(int idProduct, int price, int publishDate)
+    {
+      ID_Product = idProduct;
+      Price = price;
+      PublishDate = publishDate;
+    }
+
+    public PriceCard()
+    {
+    }
   }
 }

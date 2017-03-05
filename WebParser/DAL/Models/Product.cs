@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.Models
+﻿namespace DAL.Models
 {
   public class Product
   {
@@ -21,6 +15,18 @@ namespace DAL.Models
       Description = description;
       Link = link;
       ImageBase64 = imageBase64;
+    }
+
+    public Product(string title, string description, string link, string imageBase64)
+    {
+      Title = title;
+      Description = description;
+      Link = link;
+      ImageBase64 = imageBase64;
+    }
+
+    public Product()
+    {
     }
   }
 }
