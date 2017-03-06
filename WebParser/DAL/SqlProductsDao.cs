@@ -36,7 +36,8 @@ namespace DAL
     {
       using (var context = new OnlineShopEntities())
       {
-        return ConvertToProduct(context.Products.Find(id));
+        return context.Products.Where(p => p.ID == id).Select(p => p).ToList().Select(ConvertToProduct).ToList().First();
+        //return ConvertToProduct(context.Products.Find(id));
       }
     }
 
