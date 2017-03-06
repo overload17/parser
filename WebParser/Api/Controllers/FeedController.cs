@@ -44,6 +44,17 @@ namespace Api.Controllers
     }
 
     [HttpGet]
+    [Route("Feed/price/{ID:int}")]
+    public HttpResponseMessage GetPricesById(int id)
+    {
+      _dao = SqlProductsDao.GetInstance();
+      var prices = _dao.GetAllPriceCardsByProductID(id);
+        var hrm = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(prices));
+        hrm.Headers.Add("Access-Control-Allow-Origin", "*");
+        return hrm;
+      }
+
+    [HttpGet]
     [Route("Feed/all")]
     public HttpResponseMessage GetAllFeed()
     {

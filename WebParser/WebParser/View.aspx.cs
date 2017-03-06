@@ -21,7 +21,7 @@ namespace WebParser
     protected void Page_Load(object sender, EventArgs e)
     {
       /* Вызов скраппера*/
-      //Processor.GetPageFromSource("http://skay.ua/4-samsung/");
+      Processor.GetPageFromSource("http://skay.ua/4-samsung/");
 
       _allProducts = Dao.GetAllProducts().OrderByDescending(q => q.ID).ToList();
       CreateElementsHead();

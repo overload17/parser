@@ -11,13 +11,17 @@
   <link href="css/components/notify.gradient.css" rel="stylesheet"/>
   <link href="css/components/upload.css" rel="stylesheet"/>
   <link href="css/components/notify.css" rel="stylesheet"/>
+  <link href="css/c3.css" rel="stylesheet" />
   <link href="css/page.css" rel="stylesheet"/>
+
 
   <script src="scripts/jquery-3.1.1.min.js"></script>
   <script src="scripts/uikit.js"></script>
   <script src="scripts/components/notify.js"></script>
   <script src="scripts/components/upload.js"></script>
   <script src="scripts/components/pagination.min.js"></script>
+  <script src="scripts/d3.min.js" charset="utf-8"></script>
+  <script src="scripts/c3.min.js"></script>
   <script src="scripts/viewer.js"></script>
 </head>
 
@@ -89,7 +93,10 @@
             <div class="uk-form-row uk-form">
               <label class="uk-form-label uk-text-bold">Description: </label>
               <textarea name="DescriptionProduct" rows="10" cols="20" id="DescriptionProduct" class="uk-width-1-1" autocomplete="off" runat="server" style="resize: none;"></textarea>
-              <div class="uk-form uk-margin-top">
+            </div>
+            <div class="uk-form-row uk-form">
+              <label class="uk-form-label uk-text-bold">Price Chart: </label>
+              <div class="uk-form uk-width-1-1" id="chart">
               </div>
             </div>
           </div>

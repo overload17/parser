@@ -21,10 +21,24 @@ function editProduct(id) {
   getProduct(id);
   $("#productID").val(id);
   $("#productID").text(id);
+
+  var prices = getPrices(id);
+
+  var arr = $.map(prices, function (el) { return el.Price });
+  arr.unshift("Цена");
+
   var modal = UIkit.modal("#gridGlobal");
   modal.bgclose = false;
   modal.center = true;
   modal.show();
+  var chart = c3.generate({
+    bindto: "#chart",
+    data: {
+      columns: [
+        arr
+      ]
+    }
+  });
 }
 
 var tempData;
@@ -43,6 +57,16 @@ function getProduct(id) {
       fillEditor(tempData);
     },
     "json");
+}
+
+function getPrices(id) {
+  var url = $("#gridGlobal").data("feedsapi") + "feed/price/" + id;
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", url, false);
+  xmlHttp.send(null);
+  var res = xmlHttp.responseText;
+  var result = JSON.parse(JSON.parse(res));
+  return result;
 }
 
 function fillEditor(data) {

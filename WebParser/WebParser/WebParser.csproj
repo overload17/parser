@@ -98,6 +98,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\c3.css" />
     <Content Include="css\page.css" />
     <Content Include="css\components\accordion.almost-flat.css" />
     <Content Include="css\components\accordion.almost-flat.min.css" />
@@ -247,6 +248,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scripts\c3.min.js" />
     <Content Include="scripts\components\accordion.js" />
     <Content Include="scripts\components\accordion.min.js" />
     <Content Include="scripts\components\autocomplete.js" />
@@ -325,6 +327,7 @@
     <Content Include="scripts\core\touch.min.js" />
     <Content Include="scripts\core\utility.js" />
     <Content Include="scripts\core\utility.min.js" />
+    <Content Include="scripts\d3.min.js" />
     <Content Include="scripts\viewer.js" />
     <Content Include="scripts\jquery-3.1.1.min.js" />
     <Content Include="scripts\uikit.js" />
