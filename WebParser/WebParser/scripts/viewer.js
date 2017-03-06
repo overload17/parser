@@ -46,7 +46,7 @@ var tempData;
 function getProduct(id) {
   $("#productID").val(id);
   $("#productID").text(id);
-  var url = $("#gridGlobal").data("feedsapi") + "feed/" + id;
+  var url = $("#gridGlobal").data("feedsapi") + "product/" + id;
   emptyEditor();
   $.get(url,
     function(data) {
@@ -60,7 +60,7 @@ function getProduct(id) {
 }
 
 function getPrices(id) {
-  var url = $("#gridGlobal").data("feedsapi") + "feed/price/" + id;
+  var url = $("#gridGlobal").data("feedsapi") + "product/price/" + id;
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("GET", url, false);
   xmlHttp.send(null);

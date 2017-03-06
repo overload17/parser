@@ -13,8 +13,8 @@ namespace Api.Controllers
     private static IProductDao _dao = SqlProductsDao.GetInstance();
 
     [HttpGet]
-    [Route("Feed/{ID:int}")]
-    public HttpResponseMessage GetFeedsById(int id)
+    [Route("product/{ID:int}")]
+    public HttpResponseMessage GetProductById(int id)
     {
       _dao = SqlProductsDao.GetInstance();
       HttpResponseMessage rm;
@@ -44,19 +44,19 @@ namespace Api.Controllers
     }
 
     [HttpGet]
-    [Route("Feed/price/{ID:int}")]
+    [Route("product/price/{ID:int}")]
     public HttpResponseMessage GetPricesById(int id)
     {
       _dao = SqlProductsDao.GetInstance();
       var prices = _dao.GetAllPriceCardsByProductID(id);
-        var hrm = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(prices));
-        hrm.Headers.Add("Access-Control-Allow-Origin", "*");
-        return hrm;
-      }
+      var hrm = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(prices));
+      hrm.Headers.Add("Access-Control-Allow-Origin", "*");
+      return hrm;
+    }
 
     [HttpGet]
-    [Route("Feed/all")]
-    public HttpResponseMessage GetAllFeed()
+    [Route("product/all")]
+    public HttpResponseMessage GetAllProducts()
     {
       _dao = SqlProductsDao.GetInstance();
       var news = _dao.GetAllProducts();
