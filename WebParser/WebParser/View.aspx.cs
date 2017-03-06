@@ -20,13 +20,17 @@ namespace WebParser
 
     protected void Page_Load(object sender, EventArgs e)
     {
-      _allProducts = Dao.GetAllProducts();
+      _allProducts = Dao.GetAllProducts().OrderByDescending(q => q.ID).ToList();
       CreateElementsHead();
       var feedsApi = WebConfigurationManager.AppSettings["feedsAPI"];
       gridGlobal.Attributes.Add("data-feedsAPI", feedsApi);
       if (!IsPostBack)
+      {
         for (var i = 20; i <= 200; i += 20)
+        {
           ProductsOnPage.Items.Add(new ListItem(i.ToString(), i.ToString()));
+        }
+      }
       ChangePage();
     }
 
@@ -38,10 +42,16 @@ namespace WebParser
       var onPage = int.Parse(ProductsOnPage.SelectedValue);
 
       if (onPage > listProducts.Count)
+      {
         onPage = listProducts.Count;
+      }
+
       var pagesCount = onPage == 0 ? 1 : (int) Math.Ceiling((decimal) listProducts.Count / onPage);
 
-      if (currentPage >= pagesCount) currentPage = pagesCount - 1;
+      if (currentPage >= pagesCount)
+      {
+        currentPage = pagesCount - 1;
+      }
       if (onPage > 0)
       {
         var skiped = listProducts.Skip(currentPage * onPage);

@@ -3,6 +3,16 @@
     $("#btnPage").click();
   });
 
+$(function () {
+  $("body")
+      .on("select.uk.pagination",
+          "[data-uk-pagination]",
+          function (e, pageIndex) {
+            $("#pageNumber").val(pageIndex);
+            $("#btnPage").click();
+          });
+});
+
 function buildPages(count, current) {
   UIkit.pagination($("#pages"), { items: count, currentPage: current });
 }
@@ -39,8 +49,7 @@ function fillEditor(data) {
   $("#TitleProduct").val(data[0].Title);
   $("#LinkProduct").val(data[0].Link);
   $("#imageBase64").val(data[0].ImageBase64 == "" ? "" : "data:image/png;base64," + data[0].ImageBase64);
-  $("#ImageProduct").attr("src",
-    data[0].ImageBase64 == "" ? defaultImage : "data:image/png;base64," + data[0].ImageBase64);
+  $("#ImageProduct").attr("src",data[0].ImageBase64 == "" ? defaultImage : "data:image/png;base64," + data[0].ImageBase64);
   $("#DescriptionProduct").val(data[0].Description);
 }
 
