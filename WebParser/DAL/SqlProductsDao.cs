@@ -146,13 +146,14 @@ namespace DAL
 
     public PriceCard ConvertToPriceCard(Prices product)
     {
-      return new PriceCard
+      var result = new PriceCard
       {
         ID = product.ID,
         ID_Product = product.ID_Product,
         Price = product.Price,
         PublishDate = product.PublishDate
       };
+      return result;
     }
 
     public Product ConvertToProduct(Products product)
